@@ -1,4 +1,24 @@
+.post {
+  max-width: 500px;
+  margin: 2.5rem 0;
+  background-color: white;
+  border: 1px solid #dedede;
+  border-radius: 5px;
+}
+.post h4 {
+  padding: 10px 20px;
+}
+.post__header {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+}
+.post__avatar {
+  margin-right: 0.5rem;
+}
 .post__image {
   width: 100%;
   object-fit: contain;
+  border-top: 1px solid #dedede;
+  border-bottom: 1px solid #dedede;
 }
