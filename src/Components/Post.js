@@ -7,7 +7,7 @@ function Post() {
     <div className="post">
       <Avatar
         className="post__avatar"
-        alt="user-avatra"
+        alt="user-avatar"
         src="/static/images/avatar/1.jpg"
       />
       <h3>Ganimed</h3>
@@ -24,5 +24,3 @@ function Post() {
 }
 
 export default Post;
-
-// https://cdn1.iconfinder.com/data/icons/user-pictures/101/malecostume-512.png
