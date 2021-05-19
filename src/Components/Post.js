@@ -2,28 +2,20 @@ import React from "react";
 import Avatar from "@material-ui/core/Avatar";
 import "./PostStyle.css";
 
-function Post() {
+function Post({ img, userName, caption }) {
   return (
     <div className="post">
       <div className="post__header">
         <Avatar
           className="post__avatar"
-          alt="Ganimed-avatar"
+          alt={userName}
           src="/static/images/avatar/1.jpg"
         />
-        <h3>Ganimed</h3>
+        <h3>{userName}</h3>
       </div>
-      <img
-        src="https://nerdist.com/wp-content/uploads/2020/04/DC-Comics-New-Comics-Header.jpg"
-        alt="post"
-        className="post__image"
-      />
+      <img src={img} alt="post" className="post__image" />
       <h4>
-        Ganimed:{" "}
-        <span>
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Assumenda,
-          odio?
-        </span>
+        {userName}: <span>{caption}</span>
       </h4>
     </div>
   );
