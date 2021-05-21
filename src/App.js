@@ -3,7 +3,7 @@ import Post from "./Components/Post";
 import Modal from "@material-ui/core/Modal";
 import { makeStyles } from "@material-ui/core/styles";
 import { Button, Input } from "@material-ui/core";
-import { db } from "./firebase";
+import { db, auth } from "./firebase";
 import "./App.css";
 
 function getModalStyle() {
@@ -33,19 +33,30 @@ function App() {
   const [modalStyle] = useState(getModalStyle);
   const [posts, setPosts] = useState([]);
   const [open, setOpen] = useState(false);
+  const [user, setUser] = useState(null);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   // const [userData, setUserData] = useState({
   //   username: "",
   //   email: "",
-  //   password: ""
+  //   password: "",
   // });
 
-  const formStyle = {
-    display: "block",
-    margin: "1rem auto",
-  };
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((authUser) => {
+      if (authUser) {
+        console.log(authUser);
+        setUser(authUser);
+      } else {
+        setUser(null);
+      }
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, [user, username]);
 
   useEffect(() => {
     db.collection("posts").onSnapshot((snapshot) => {
@@ -57,7 +68,27 @@ function App() {
     });
   }, []);
 
-  const signUp = (e) => {};
+  // const handleChange = (e) => {
+  //   e.preventDefault();
+
+  //   setUserData({
+  //     [e.target.name]: [e.target.value],
+  //   });
+  //   console.log(userData);
+  // };
+
+  const signUp = (e) => {
+    e.preventDefault();
+
+    auth
+      .createUserWithEmailAndPassword(email, password)
+      .then((authUser) => {
+        return authUser.user.updateProfile({
+          displayName: username,
+        });
+      })
+      .catch((error) => alert(error.message));
+  };
 
   return (
     <div className="app">
@@ -78,23 +109,26 @@ function App() {
             <Input
               type="text"
               placeholder="username"
+              name="username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
             />
             <Input
               type="text"
               placeholder="email"
+              name="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
             <Input
               type="text"
               placeholder="password"
+              name="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
             <Button
-              style={formStyle}
+              type="submit"
               onClick={signUp}
               variant="contained"
               color="secondary">
